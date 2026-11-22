@@ -1,0 +1,118 @@
+[
+ {
+  "match": "first name",
+  "answer": "{name.first}"
+ },
+ {
+  "match": "last name",
+  "answer": "{name.last}"
+ },
+ {
+  "match": "middle name( or initial)?",
+  "answer": "{name.middle}"
+ },
+ {
+  "match": "(what is your )?preferred name",
+  "answer": "{name.preferred}"
+ },
+ {
+  "match": "(primary |mobile |cell )?phone( number)?",
+  "answer": "{contact.phone}"
+ },
+ {
+  "match": ".*mobile (phone|number).*",
+  "answer": "{contact.phone}"
+ },
+ {
+  "match": "phone type",
+  "answer": "{contact.phone_type}"
+ },
+ {
+  "match": "e-?mail( address)?",
+  "answer": "{contact.email}"
+ },
+ {
+  "match": "linkedin( profile)?( url| link)?|(your )?linkedin profile (url|link)",
+  "answer": "{contact.linkedin}"
+ },
+ {
+  "match": "city",
+  "answer": "{address.city}"
+ },
+ {
+  "match": "city, state|what city / town are you located in|current location( \\(city, state\\))?|location( \\(city, state\\))?",
+  "answer": "{address.city_state}"
+ },
+ {
+  "match": "state|what state are you located in",
+  "answer": [
+   "{address.state}",
+   "{address.state_abbr}"
+  ]
+ },
+ {
+  "match": "(zip|postal)( code)?|zip/postal code|what is your zipcode / postal code",
+  "answer": "{address.zip}"
+ },
+ {
+  "match": "(street )?address( line)?( 1)?|street( 1)?",
+  "answer": "{address.street}"
+ },
+ {
+  "match": "street 2|address( line)? 2|apt.*|suite.*|unit",
+  "answer": "{address.street2}"
+ },
+ {
+  "match": "county",
+  "answer": "{address.county}"
+ },
+ {
+  "match": "country",
+  "answer": [
+   "{address.country}",
+   "United States of America",
+   "USA"
+  ]
+ },
+ {
+  "match": "address type",
+  "answer": "{address.type}"
+ },
+ {
+  "match": "(what is your )?(full )?mailing address|(home |full )address",
+  "answer": "{address.one_line}"
+ },
+ {
+  "match": "visa type",
+  "answer": [
+   "{work_authorization.citizenship_label}",
+   "US Citizen",
+   "None"
+  ]
+ },
+ {
+  "match": "citizenship( status)?",
+  "answer": "{work_authorization.citizenship_label}"
+ },
+ {
+  "match": "(what is your )?highest (level of )?education( completed)?",
+  "answer": [
+   "{education.highest_level}",
+   "Bachelor's",
+   "Bachelors",
+   "Bachelor"
+  ]
+ },
+ {
+  "match": "(date )?available (to|start) (start )?date|date available to start|available start date",
+  "answer": "{availability.start}"
+ },
+ {
+  "match": "(when can you start|earliest (possible )?start date|when are you available to start( working)?)",
+  "answer": "{availability.start}"
+ },
+ {
+  "match": "how did you (learn|hear) about (this|the) (opportunity|position|role|job)",
+  "answer": "{sourcing.heard_about}"
+ }
+]

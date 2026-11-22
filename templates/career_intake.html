@@ -1,0 +1,466 @@
+<title>Career Intake</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a drawing set. Left rail = sheet index with progress ticks; each section is a "sheet" with a title block. */
+:root {
+  --paper: #f2f4f5;
+  --sheet: #ffffff;
+  --ink: #1b2630;
+  --ink-2: #4a5966;
+  --rule: #cfd7dd;
+  --accent: #1d6a86;      /* anodized blue */
+  --accent-ink: #ffffff;
+  --mark: #e8a317;        /* dimension-callout amber, used sparingly */
+  --ok: #2f7d4f;
+  --field: #f8fafb;
+  --display: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #11171c; --sheet: #182129; --ink: #e3e9ee; --ink-2: #9fb0bd; --rule: #2c3a45;
+  --accent: #5bb3d3; --accent-ink: #0d1418; --mark: #f0b43a; --ok: #6cc48f; --field: #121a20; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper: #11171c; --sheet: #182129; --ink: #e3e9ee; --ink-2: #9fb0bd; --rule: #2c3a45;
+  --accent: #5bb3d3; --accent-ink: #0d1418; --mark: #f0b43a; --ok: #6cc48f; --field: #121a20; color-scheme: dark }
+
+* { box-sizing: border-box }
+body { background: var(--paper); color: var(--ink); font: 15px/1.55 var(--body); margin: 0 }
+.wrap { max-width: 1180px; margin: 0 auto; padding-inline: 16px; padding-block: 24px 80px;
+  display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 28px }
+@media (max-width: 860px) { .wrap { grid-template-columns: minmax(0, 1fr) } .rail { display: none } }
+
+header.top { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 16px 28px; align-items: end; justify-content: space-between;
+  border-bottom: 2px solid var(--ink); padding-bottom: 14px }
+header.top h1 { font: 700 2.4rem/1 var(--display); letter-spacing: .01em; margin: 0; text-wrap: balance }
+header.top .sub { color: var(--ink-2); max-width: 62ch; margin: 6px 0 0 }
+.status { font: 500 12px var(--mono); color: var(--ink-2); display: flex; flex-direction: column; gap: 4px; align-items: flex-end; min-width: 0 }
+.status b { color: var(--ink) }
+.bar { width: 220px; max-width: 100%; height: 6px; background: var(--rule); border-radius: 3px; overflow: hidden }
+.bar i { display: block; height: 100%; background: var(--accent); width: 0; transition: width .3s }
+
+.rail { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); align-self: start; max-height: calc(100vh - 32px); overflow: auto }
+.rail ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px }
+.rail a { display: grid; grid-template-columns: 34px 1fr auto; gap: 8px; align-items: baseline; padding: 6px 8px; border-radius: 4px;
+  color: var(--ink-2); text-decoration: none; font-size: 13.5px }
+.rail a:hover, .rail a:focus-visible { background: var(--sheet); color: var(--ink); outline: none }
+.rail a .n { font: 500 11px var(--mono); color: var(--ink-2) }
+.rail a .t { font: 500 11px var(--mono); font-variant-numeric: tabular-nums }
+.rail a.done .t { color: var(--ok) }
+
+main { display: grid; gap: 28px; min-width: 0 }
+.intro { background: var(--sheet); border: 1px solid var(--rule); padding: 20px 22px; display: grid; gap: 10px }
+.intro h2 { font: 600 1.35rem var(--display); margin: 0; letter-spacing: .02em }
+.intro p, .intro ul { margin: 0; max-width: 70ch }
+.intro ul { padding-left: 20px; display: grid; gap: 4px }
+
+section.sheet { background: var(--sheet); border: 1px solid var(--ink); min-width: 0 }
+.tb { display: grid; grid-template-columns: 1fr auto auto; border-bottom: 1px solid var(--ink) }
+.tb > div { padding: 8px 14px; border-left: 1px solid var(--ink); min-width: 0 }
+.tb > div:first-child { border-left: 0 }
+.tb .lbl { font: 500 10px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); display: block }
+.tb h2 { font: 700 1.5rem/1.1 var(--display); margin: 2px 0 0; letter-spacing: .015em; text-wrap: balance }
+.tb .v { font: 500 14px var(--mono); font-variant-numeric: tabular-nums }
+@media (max-width: 520px) { .tb { grid-template-columns: 1fr auto } .tb > div:nth-child(2) { display: none } }
+.sheet .body { padding: 18px 22px 22px; display: grid; gap: 20px }
+.sheet .lead { color: var(--ink-2); margin: 0; max-width: 70ch }
+
+.q { display: grid; gap: 6px; min-width: 0 }
+.q > label, .q > .label { font-weight: 600 }
+.q .help { color: var(--ink-2); font-size: 13.5px; margin: -2px 0 2px; max-width: 72ch }
+input[type=text], input[type=url], input[type=email], input[type=tel], textarea, select {
+  font: inherit; color: var(--ink); background: var(--field); border: 1px solid var(--rule); border-radius: 4px; padding: 9px 11px; width: 100% }
+textarea { min-height: 96px; resize: vertical }
+textarea.tall { min-height: 160px }
+input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent) }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px 20px }
+.checks { display: flex; flex-wrap: wrap; gap: 6px 8px }
+.checks label { display: inline-flex; gap: 6px; align-items: center; border: 1px solid var(--rule); border-radius: 999px; padding: 4px 11px;
+  font-size: 13.5px; cursor: pointer; background: var(--field) }
+.checks label:has(input:checked) { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, var(--field)) }
+.checks input { accent-color: var(--accent); margin: 0 }
+
+.matrix { overflow-x: auto; border: 1px solid var(--rule); border-radius: 4px }
+.matrix table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 13.5px }
+.matrix th, .matrix td { padding: 6px 10px; border-bottom: 1px solid var(--rule); text-align: center }
+.matrix th:first-child, .matrix td:first-child { text-align: left; font-weight: 500 }
+.matrix thead th { font: 500 10.5px var(--mono); letter-spacing: .05em; text-transform: uppercase; color: var(--ink-2); background: var(--field); position: sticky; top: 0 }
+.matrix tr:last-child td { border-bottom: 0 }
+.matrix input { accent-color: var(--accent); width: 16px; height: 16px; cursor: pointer }
+.matrix .grp td { background: var(--field); font: 600 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); text-align: left }
+.legend { font-size: 13px; color: var(--ink-2) }
+
+.group { display: grid; gap: 14px }
+.item { border: 1px dashed var(--ink-2); border-radius: 4px; padding: 14px 16px 16px; display: grid; gap: 14px; position: relative }
+.item-h { display: flex; justify-content: space-between; align-items: center; gap: 10px }
+.item-h span { font: 600 1.05rem var(--display); letter-spacing: .03em; text-transform: uppercase }
+.item-h span em { font: 500 12px var(--mono); color: var(--mark); font-style: normal; letter-spacing: 0; margin-left: 6px }
+button { font: 500 14px var(--body); border-radius: 4px; padding: 8px 14px; cursor: pointer; border: 1px solid var(--ink); background: var(--sheet); color: var(--ink) }
+button.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink) }
+button.ghost { border-color: var(--rule); color: var(--ink-2); padding: 4px 10px; font-size: 13px }
+button:disabled { opacity: .5; cursor: default }
+.add { justify-self: start }
+
+footer.done { background: var(--sheet); border: 1px solid var(--rule); padding: 20px 22px; display: grid; gap: 12px }
+footer.done h2 { font: 600 1.35rem var(--display); margin: 0 }
+footer.done .row { display: flex; flex-wrap: wrap; gap: 10px }
+.toast { font: 500 13px var(--mono); color: var(--ok); min-height: 1.4em }
+.fallback { display: none; width: 100%; min-height: 200px; font: 12px/1.45 var(--mono) }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important } }
+html { scroll-behavior: smooth }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Career Intake</h1>
+      <p class="sub">Everything needed to write your master CV and set up your job search. Answers save as you type. Come back and continue any time.</p>
+    </div>
+    <div class="status" aria-live="polite">
+      <span id="saveState">Loading…</span>
+      <span><b id="pct">0%</b> of questions answered</span>
+      <div class="bar"><i id="barFill"></i></div>
+    </div>
+  </header>
+
+  <nav class="rail" aria-label="Sections"><ol id="railList"></ol></nav>
+
+  <main id="main">
+    <div class="intro">
+      <h2>How to fill this in</h2>
+      <ul>
+        <li><b>Skip anything that doesn't apply.</b> Nothing is required, and it's fine to do this over several sittings.</li>
+        <li><b>Rough numbers beat no numbers.</b> "About 40 tickets a week", "cut turnaround roughly in half" or "~$20k saved" are all useful. Mark guesses with "~".</li>
+        <li><b>Write the way you'd explain it to a colleague.</b> Notes and fragments are fine; Claude turns them into CV wording.</li>
+        <li><b>NDAs:</b> if work is confidential, describe it generically ("a large retail client") and say in the NDA box what can be named.</li>
+        <li>Nothing here goes on a CV without you approving the wording first.</li>
+      </ul>
+    </div>
+    <div id="sheets" style="display:grid;gap:28px"></div>
+
+    <footer class="done">
+      <h2>When you're done</h2>
+      <p style="margin:0;max-width:70ch">Use one of these to export your answers, save the result as <code>documents/cv/career-intake.md</code> in the project folder, then run <code>/setup</code>:</p>
+      <div class="row">
+        <button class="primary" id="copyAll" type="button">Copy all answers</button>
+        <button id="dlAll" type="button" hidden>Save as a file</button>
+      </div>
+      <textarea class="fallback" id="fallbackText" readonly aria-label="All answers as text"></textarea>
+      <div class="toast" id="toast" aria-live="polite"></div>
+    </footer>
+  </main>
+</div>
+
+<script>
+/* ---------- Questionnaire definition ---------- */
+const T = (id, label, help, o = {}) => ({ id, type: o.long ? 'textarea' : (o.kind || 'text'), label, help, ...o });
+const L = (id, label, help, o = {}) => T(id, label, help, { ...o, long: true });
+const C = (id, label, options, help) => ({ id, type: 'checks', label, options, help });
+const S = (id, label, options, help) => ({ id, type: 'select', label, options, help });
+const LEVELS = ['None', 'Exposure', 'Working', 'Strong', 'Expert'];
+
+const SECTIONS = [
+{ id: 'contact', title: 'Contact and basics', lead: 'What goes in the CV header and on application forms.', fields: [
+  { row: [T('legal_name', 'Full legal name'), T('preferred_name', 'Name you want on your CV', 'If different, e.g. a shortened first name.')] },
+  { row: [T('email', 'Email for applications', '', { kind: 'email' }), T('phone', 'Phone', '', { kind: 'tel' })] },
+  { row: [T('city', 'City and state you live in'), T('linkedin', 'LinkedIn URL', 'Paste the full link, or say "none".', { kind: 'url' })] },
+  T('portfolio', 'Portfolio, personal site, GitHub or other links', 'List any links you would want an employer to see, or say "none".', { long: true }),
+  { row: [S('work_auth', 'Work authorization', ['', 'US citizen', 'US permanent resident', 'Visa, no sponsorship needed', 'Need sponsorship now or later', 'Prefer to discuss']),
+          S('clearance', 'Security clearance', ['', 'None', 'Have one (active)', 'Had one (inactive)', 'Willing to get one', 'Would rather not'])] },
+  T('start', 'When could you start?', 'e.g. immediately, two weeks after an offer, after a specific date.'),
+  T('status_now', 'Current situation', 'Employed, between jobs, finishing school, freelancing… and anything about timing.', { long: true }),
+]},
+{ id: 'targets', title: 'What you are looking for', lead: 'This sets the search. List everything you would genuinely consider.', fields: [
+  L('roles', 'Job titles that interest you', 'As many as you like, one per line. Include titles one step above and one step below where you are now.'),
+  T('roles_other', 'Titles to avoid'),
+  L('industries', 'Industries, dream companies, or companies to avoid'),
+  { row: [S('level', 'Level you are aiming for', ['', 'Entry level / new grad', 'Early career (1–4 years)', 'Mid-level', 'Senior', 'Manager or lead', 'Not sure, advise me']),
+          C('emp_type', 'Employment types', ['Full-time', 'Contract', 'Part-time', 'Internship / co-op'])] },
+  { row: [C('work_mode', 'Work arrangements you would accept', ['On site', 'Hybrid', 'Remote']),
+          T('commute', 'Longest commute you would accept', 'Minutes or miles, and from where.')] },
+  L('relocation', 'Would you relocate?', 'Where to, where not, and whether a relocation package matters.'),
+  L('pay', 'Pay expectations', 'Private; never stated first to an employer. A minimum, a target, or "not sure".'),
+  L('excites', 'What kind of work excites you most?'),
+  L('drains', 'What work drains you, or would you rather not do?'),
+  L('dealbreakers', 'Deal-breakers', 'Anything that rules a job out: travel, shift work, certain industries, company size, culture…'),
+]},
+{ id: 'education', title: 'Education', lead: 'Most recent first. Add one entry per degree, certificate program or bootcamp.', group: { name: 'Degree', fields: [
+  { row: [T('school', 'School'), T('degree', 'Degree and major', 'e.g. BA Economics')] },
+  { row: [T('minor', 'Minor, concentration or emphasis'), T('dates', 'Dates', 'Start–end, or expected graduation')] },
+  { row: [T('gpa', 'GPA', 'Only if you would want it shown.'), T('honors', 'Honors, scholarships, dean\'s list')] },
+  L('coursework', 'Relevant coursework'),
+  L('capstone', 'Capstone, thesis or major project', 'What you did, team size, your part, the result, and any sponsor or award.', { tall: true }),
+]}},
+{ id: 'experience', title: 'Work experience', lead: 'Every job, internship, contract or research position, most recent first. Unrelated jobs can go in briefly at the end.', group: { name: 'Position', fields: [
+  { row: [T('company', 'Company or organization'), T('title', 'Your job title', 'Your official title, plus what you would call it if that differs.')] },
+  { row: [T('location', 'Location', 'City, and whether on site, hybrid or remote'), T('dates', 'Dates', 'Month and year, start–end')] },
+  { row: [S('type', 'Type', ['', 'Full-time', 'Internship', 'Co-op', 'Contract / freelance', 'Part-time', 'Research assistant']), T('promotions', 'Promotions or title changes')] },
+  L('company_desc', 'What the company or team does', 'One or two lines, so a reader who has never heard of it understands.'),
+  L('team', 'Team and who you worked with', 'Team size, who you reported to, which other teams, clients or vendors you worked with.'),
+  L('nda', 'NDA or confidentiality limits', 'What can be named publicly (client, product), and what has to stay generic.'),
+  L('duties', 'What you did day to day', 'Plain list is fine.', { tall: true }),
+  L('wins', 'Accomplishments, with numbers where possible', 'Volume handled, money or time saved, things shipped, deadlines hit, problems caught early, people trained.', { tall: true }),
+  L('tools', 'Tools and software used in this job'),
+  L('leaving', 'Why you left or are leaving', 'Private; helps prepare interview answers.'),
+]}},
+{ id: 'projects', title: 'Project deep dives', lead: 'This is where the strongest CV bullets and interview stories come from. Add one entry per significant project from work, school or your own time. Three to five is a good target.', group: { name: 'Project', fields: [
+  { row: [T('name', 'Project name', 'A working name is fine.'), S('context', 'Where', ['', 'Job', 'Internship', 'School / capstone', 'Competition or club', 'Personal', 'Freelance', 'Volunteer'])] },
+  { row: [T('when', 'When, and how long it took'), T('team_role', 'Team size and your role', 'e.g. "Lead on a team of 4", "solo".')] },
+  L('goal', 'What it had to achieve: goals and constraints', 'Scope, budget, deadline, who it was for, what made it hard.'),
+  L('your_part', 'What you personally did or decided', 'Separate your contribution from the team\'s. Include the trade-offs you weighed and why you chose what you did.', { tall: true }),
+  L('method', 'How you approached it', 'Methods, tools, analysis, and how you checked your work.'),
+  L('outcome', 'Result, with numbers', 'What changed because of it, how it performed, who used it.'),
+  L('lessons', 'What you would do differently'),
+  S('showable', 'Could this be shown or named publicly?', ['', 'Yes, freely', 'Yes, with details genericized', 'No']),
+]}},
+{ id: 'skills', title: 'Skills and tools', lead: 'Rate honestly; this decides what the CV can claim.', fields: [
+  L('sk_tools', 'Software and tools, with your level for each', 'One per line, e.g. "Excel: Strong". Exposure = class or tutorial. Working = used it on real work with help. Strong = use it independently, day to day. Expert = others come to you.', { tall: true }),
+  L('sk_other', 'Other skills', 'Methods, domain knowledge, anything else an employer might search for.'),
+  L('certs', 'Certifications and licenses', 'Include dates.'),
+  L('languages', 'Languages you speak, and how well'),
+]},
+{ id: 'beyond', title: 'Beyond the job', lead: 'Often the most interesting part of a CV.', fields: [
+  L('teams', 'Clubs, teams and organizations', 'Your role and what you did.'),
+  L('personal', 'Personal projects'),
+  L('pubs', 'Publications, patents, presentations or posters'),
+  L('awards', 'Awards and recognition'),
+  L('lead_teach', 'Leadership, mentoring and teaching', 'Leading a team, training new hires, tutoring, TA work.'),
+  L('volunteer', 'Volunteering or other notable things'),
+]},
+{ id: 'stories', title: 'Stories for interviews', lead: 'Short notes on each; Claude turns them into interview answers in the situation, task, action, result format. A few sentences per story is plenty.', fields: [
+  L('st_proud', 'The work you are proudest of, and why'),
+  L('st_hard', 'The hardest problem you solved', 'What made it hard, what you tried, what worked.'),
+  L('st_fail', 'Something that failed, or a mistake you made, and what you changed afterward'),
+  L('st_tradeoff', 'A tough trade-off or decision with incomplete information'),
+  L('st_conflict', 'A disagreement with a teammate, client, vendor or manager, and how it resolved'),
+  L('st_deadline', 'A tight deadline you hit, or a schedule you rescued'),
+  L('st_cross', 'Working across teams or disciplines to make something work'),
+  L('st_saved', 'A time you saved cost, time or rework'),
+]},
+{ id: 'style', title: 'How you work', lead: 'Used for fit scoring and to describe you accurately. There are no right answers.', fields: [
+  L('strengths', 'Your strengths, in your own words', 'Also: how would a teammate or manager describe you?'),
+  L('growth', 'Areas you are still developing'),
+  L('environment', 'The environment you do your best work in', 'Team size, startup vs large company, structured vs scrappy, amount of supervision.'),
+  S('solo_team', 'Solo vs team', ['', 'Mostly independent', 'Mix', 'Mostly collaborative']),
+  L('manage', 'Interest in leading people', 'Now, later, or never, and what kind of manager suits you.'),
+  L('assessments', 'Any personality or strengths assessments you have taken', 'e.g. CliftonStrengths, DISC, Myers-Briggs. Optional.'),
+]},
+{ id: 'refs', title: 'References and anything sensitive', lead: 'Private. None of this goes on the CV.', fields: [
+  L('references', 'Possible references', 'Name, relationship, and whether they know they may be called. Names alone are fine for now.'),
+  L('gaps', 'Gaps, short stints or anything you would rather we handle carefully', 'So interview answers can be prepared calmly ahead of time.'),
+  L('docs_have', 'Documents you already have', 'Existing resume, portfolio PDF, transcripts, LinkedIn PDF export (LinkedIn: Me, View profile, Resources, Save to PDF), reference letters. Put copies in the documents/ folder.'),
+  L('anything', 'Anything else we should know'),
+]},
+];
+
+/* ---------- State ---------- */
+let state = { f: {}, g: {} };
+const LS_KEY = 'career-intake-draft-v1';
+let db = null, docRef = null, canSave = false, saveTimer = null, saving = false, pendingSave = false;
+
+function loadLocal() { try { const s = localStorage.getItem(LS_KEY); if (s) return JSON.parse(s); } catch (e) {} return null; }
+function saveLocal() { try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch (e) {} }
+
+/* ---------- Rendering ---------- */
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
+
+function fieldHTML(f, key, val) {
+  const id = 'f_' + key.replace(/[^a-zA-Z0-9_]/g, '_');
+  const help = f.help ? `<p class="help">${esc(f.help)}</p>` : '';
+  if (f.type === 'textarea') return `<div class="q"><label for="${id}">${esc(f.label)}</label>${help}<textarea id="${id}" data-k="${key}" class="${f.tall ? 'tall' : ''}">${esc(val)}</textarea></div>`;
+  if (f.type === 'select') return `<div class="q"><label for="${id}">${esc(f.label)}</label>${help}<select id="${id}" data-k="${key}">${f.options.map(o => `<option value="${esc(o)}"${o === val ? ' selected' : ''}>${o ? esc(o) : 'Choose…'}</option>`).join('')}</select></div>`;
+  if (f.type === 'checks') { const arr = Array.isArray(val) ? val : [];
+    return `<div class="q" role="group" aria-labelledby="${id}_l"><span class="label" id="${id}_l">${esc(f.label)}</span>${help}<div class="checks">${f.options.map((o, i) => `<label><input type="checkbox" id="${id}_${i}" data-k="${key}" data-multi="1" value="${esc(o)}"${arr.includes(o) ? ' checked' : ''}>${esc(o)}</label>`).join('')}</div></div>`; }
+  if (f.type === 'matrix') {
+    let rows = '';
+    f.groups.forEach(([g, items]) => {
+      rows += `<tr class="grp"><td colspan="${LEVELS.length + 1}">${esc(g)}</td></tr>`;
+      items.forEach(it => { const k = key + '.' + slug(it); const v = state.f[k];
+        rows += `<tr><td>${esc(it)}</td>${LEVELS.map((l, i) => `<td><input type="radio" name="${k}" id="${id}_${slug(it)}_${i}" data-k="${k}" value="${i}" aria-label="${esc(it)}: ${l}"${String(v) === String(i) ? ' checked' : ''}></td>`).join('')}</tr>`; });
+    });
+    return `<div class="q"><span class="label">${esc(f.label)}</span>${help}<div class="matrix"><table><thead><tr><th>Tool</th>${LEVELS.map(l => `<th>${l}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div></div>`;
+  }
+  return `<div class="q"><label for="${id}">${esc(f.label)}</label>${help}<input type="${f.type === 'text' ? 'text' : f.type}" id="${id}" data-k="${key}" value="${esc(val)}"></div>`;
+}
+
+function fieldsHTML(fields, keyOf, valOf) {
+  return fields.map(f => f.row
+    ? `<div class="grid2">${f.row.map(x => fieldHTML(x, keyOf(x.id), valOf(x.id))).join('')}</div>`
+    : fieldHTML(f, keyOf(f.id), valOf(f.id))).join('');
+}
+
+function itemTitle(sec, it) {
+  const first = it[sec.group.fields.flatMap(f => f.row || [f])[0].id];
+  return first ? `<em>${esc(first)}</em>` : '';
+}
+
+function groupHTML(sec) {
+  const items = state.g[sec.id] || [];
+  const list = items.length ? items : [{}];
+  return `<div class="group">${list.map((it, i) => `
+    <div class="item"><div class="item-h"><span>${esc(sec.group.name)} ${i + 1}${itemTitle(sec, it)}</span>
+      ${list.length > 1 ? `<button type="button" class="ghost" data-del="${sec.id}" data-i="${i}">Remove</button>` : ''}</div>
+      ${fieldsHTML(sec.group.fields, id => `${sec.id}#${i}#${id}`, id => it[id])}
+    </div>`).join('')}
+    <button type="button" class="add" data-add="${sec.id}">+ Add another ${esc(sec.group.name.toLowerCase())}</button></div>`;
+}
+
+function sectionBody(sec) {
+  return `<p class="lead">${esc(sec.lead)}</p>` + (sec.group ? groupHTML(sec) : fieldsHTML(sec.fields, id => id, id => state.f[id]));
+}
+
+function renderAll() {
+  const total = SECTIONS.length;
+  document.getElementById('sheets').innerHTML = SECTIONS.map((s, i) => `
+    <section class="sheet" id="${s.id}" aria-labelledby="h_${s.id}">
+      <div class="tb">
+        <div><span class="lbl">Section</span><h2 id="h_${s.id}">${esc(s.title)}</h2></div>
+        <div><span class="lbl">Answered</span><span class="v" data-count="${s.id}">0</span></div>
+        <div><span class="lbl">Sheet</span><span class="v">${String(i + 1).padStart(2, '0')} of ${total}</span></div>
+      </div>
+      <div class="body" data-body="${s.id}">${sectionBody(s)}</div>
+    </section>`).join('');
+  document.getElementById('railList').innerHTML = SECTIONS.map((s, i) =>
+    `<li><a href="#${s.id}" data-rail="${s.id}"><span class="n">${String(i + 1).padStart(2, '0')}</span><span>${esc(s.title)}</span><span class="t" data-railcount="${s.id}"></span></a></li>`).join('');
+  updateProgress();
+}
+
+function rerenderSection(id) {
+  const sec = SECTIONS.find(s => s.id === id);
+  document.querySelector(`[data-body="${id}"]`).innerHTML = sectionBody(sec);
+  updateProgress();
+}
+
+/* ---------- Progress ---------- */
+const filled = v => Array.isArray(v) ? v.length > 0 : (v !== undefined && v !== null && String(v).trim() !== '');
+function leafFields(fields) { return fields.flatMap(f => f.row || [f]); }
+function sectionCounts(sec) {
+  if (sec.group) {
+    const leaves = leafFields(sec.group.fields), items = state.g[sec.id] || [];
+    let a = 0; items.forEach(it => leaves.forEach(f => { if (filled(it[f.id])) a++; }));
+    return [a, Math.max(1, items.length) * leaves.length];
+  }
+  let a = 0, t = 0;
+  leafFields(sec.fields).forEach(f => {
+    if (f.type === 'matrix') f.groups.forEach(([, items]) => items.forEach(it => { t++; if (filled(state.f[f.id + '.' + slug(it)])) a++; }));
+    else { t++; if (filled(state.f[f.id])) a++; }
+  });
+  return [a, t];
+}
+function updateProgress() {
+  let A = 0, Tt = 0;
+  SECTIONS.forEach(s => {
+    const [a, t] = sectionCounts(s); A += a; Tt += t;
+    const c = document.querySelector(`[data-count="${s.id}"]`); if (c) c.textContent = `${a} / ${t}`;
+    const r = document.querySelector(`[data-railcount="${s.id}"]`); if (r) r.textContent = a ? `${a}` : '';
+    const ra = document.querySelector(`[data-rail="${s.id}"]`); if (ra) ra.classList.toggle('done', a > 0);
+  });
+  const p = Tt ? Math.round(100 * A / Tt) : 0;
+  document.getElementById('pct').textContent = p + '%';
+  document.getElementById('barFill').style.width = p + '%';
+}
+
+/* ---------- Editing ---------- */
+function setValue(key, value) {
+  if (key.includes('#')) {
+    const [sid, i, fid] = key.split('#'); const arr = state.g[sid] || (state.g[sid] = []);
+    while (arr.length <= +i) arr.push({});
+    arr[+i][fid] = value;
+  } else state.f[key] = value;
+}
+function onInput(e) {
+  const el = e.target; const key = el.dataset && el.dataset.k; if (!key) return;
+  let v;
+  if (el.dataset.multi) v = [...document.querySelectorAll(`input[data-k="${CSS.escape(key)}"]:checked`)].map(x => x.value);
+  else if (el.type === 'radio') v = Number(el.value);
+  else v = el.value;
+  setValue(key, v);
+  saveLocal(); updateProgress(); scheduleSave();
+}
+document.addEventListener('input', onInput);
+document.addEventListener('change', e => { if (e.target.tagName === 'SELECT' || e.target.type === 'checkbox' || e.target.type === 'radio') onInput(e); });
+document.addEventListener('click', e => {
+  const add = e.target.closest('[data-add]'), del = e.target.closest('[data-del]');
+  if (add) { const id = add.dataset.add; const arr = state.g[id] || (state.g[id] = []); if (!arr.length) arr.push({}); arr.push({});
+    rerenderSection(id); saveLocal(); scheduleSave();
+    const items = document.querySelectorAll(`[data-body="${id}"] .item`); items[items.length - 1].querySelector('input,textarea,select')?.focus(); }
+  if (del) { const id = del.dataset.del, i = +del.dataset.i;
+    if (del.dataset.armed !== '1') { del.dataset.armed = '1'; del.textContent = 'Click again to remove'; setTimeout(() => { if (del.isConnected) { del.dataset.armed = ''; del.textContent = 'Remove'; } }, 3000); return; }
+    (state.g[id] || []).splice(i, 1); rerenderSection(id); saveLocal(); scheduleSave(); }
+});
+
+/* ---------- Shared save (db) ---------- */
+function setStatus(t) { document.getElementById('saveState').textContent = t; }
+function scheduleSave() {
+  if (!canSave) { setStatus('Saved in this browser only'); return; }
+  setStatus('Saving…'); clearTimeout(saveTimer); saveTimer = setTimeout(flush, 1500);
+}
+async function flush() {
+  if (saving) { pendingSave = true; return; }
+  saving = true;
+  try { await docRef.set({ json: JSON.stringify(state), updated: new Date().toISOString() }); setStatus('Saved'); }
+  catch (err) { if (err && err.code === 'invalid_argument') { canSave = false; setStatus('Saved in this browser only'); } else setStatus('Not saved yet; will retry'); pendingSave = pendingSave || (err && err.code !== 'invalid_argument'); }
+  saving = false;
+  if (pendingSave && canSave) { pendingSave = false; setTimeout(flush, 1500); }
+}
+
+async function init() {
+  const local = loadLocal(); if (local && local.f) state = local;
+  renderAll();
+  setStatus('Saved in this browser only');
+  const timer = setTimeout(() => { if (!docRef) setStatus('Saved in this browser only'); }, 10000);
+  try {
+    db = await window.claude?.use?.('db');
+    if (!db) { clearTimeout(timer); return; }
+    docRef = db.doc('intake/answers');
+    const snap = await docRef.get(); clearTimeout(timer);
+    if (snap.exists) {
+      try { const remote = JSON.parse(snap.data().json || '{}');
+        if (remote && remote.f) {
+          // Prefer the shared copy; keep local-only answers it lacks.
+          const merged = { f: { ...(state.f || {}), ...remote.f }, g: { ...(state.g || {}), ...remote.g } };
+          state = merged; saveLocal(); renderAll();
+        } } catch (e) {}
+    }
+    canSave = true;
+    const user = await window.claude?.use?.('user');
+    const w = user && user.can ? await user.can('data.write') : null;
+    if (w === false) { canSave = false; setStatus('View only: your answers save in this browser'); }
+    else { setStatus(snap.exists ? 'Saved' : 'Ready: answers save as you type'); if (local && local.f && !snap.exists) scheduleSave(); }
+  } catch (e) { clearTimeout(timer); setStatus('Saved in this browser only'); }
+  try { const dl = await window.claude?.use?.('downloads'); if (dl) { const b = document.getElementById('dlAll'); b.hidden = false;
+    b.onclick = async () => { try { await dl.save({ filename: 'career-intake.md', data: asMarkdown() }); toast('File saved'); } catch (e) { toast('The file was not saved. Use "Copy all answers" instead.'); } }; } } catch (e) {}
+}
+
+/* ---------- Export ---------- */
+function fmt(v) { return Array.isArray(v) ? v.join(', ') : String(v).trim(); }
+function linesFor(fields, get) {
+  const out = [];
+  leafFields(fields).forEach(f => {
+    if (f.type === 'matrix') { const rated = []; f.groups.forEach(([, items]) => items.forEach(it => { const v = state.f[f.id + '.' + slug(it)]; if (filled(v)) rated.push(`${it}: ${LEVELS[v]}`); }));
+      if (rated.length) out.push(`**${f.label}:** ${rated.join('; ')}`); return; }
+    const v = get(f.id); if (filled(v)) out.push(`**${f.label}:** ${fmt(v)}`);
+  });
+  return out;
+}
+function asMarkdown() {
+  let md = `# Career Intake\n\nExported ${new Date().toISOString().slice(0, 10)}\n`;
+  SECTIONS.forEach(s => {
+    let body = [];
+    if (s.group) (state.g[s.id] || []).forEach((it, i) => { const l = linesFor(s.group.fields, id => it[id]); if (l.length) body.push(`### ${s.group.name} ${i + 1}\n\n${l.join('\n\n')}`); });
+    else { const l = linesFor(s.fields, id => state.f[id]); if (l.length) body.push(l.join('\n\n')); }
+    if (body.length) md += `\n## ${s.title}\n\n${body.join('\n\n')}\n`;
+  });
+  return md;
+}
+function toast(t) { const el = document.getElementById('toast'); el.textContent = t; setTimeout(() => { if (el.textContent === t) el.textContent = ''; }, 5000); }
+document.getElementById('copyAll').addEventListener('click', () => {
+  const md = asMarkdown(); const ta = document.getElementById('fallbackText');
+  navigator.clipboard.writeText(md).then(() => toast('Copied. Paste it into documents/cv/career-intake.md, or into the chat.'))
+    .catch(() => { ta.value = md; ta.style.display = 'block'; ta.focus(); ta.select(); toast('Select-all is done. Copy with Ctrl+C or Cmd+C.'); });
+});
+
+init();
+</script>

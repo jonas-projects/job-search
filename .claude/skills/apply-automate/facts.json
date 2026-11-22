@@ -1,0 +1,85 @@
+{
+ "_comment": "Single source of truth for application-form facts. answers_base.json refers to these as {dotted.paths}; tools/auto_answer.py hands the whole file to Claude. Change a fact HERE, nowhere else. Every value must be confirmed by the candidate (see 01-candidate-profile.md / CLAUDE.md). Placeholders ([LIKE_THIS]) and null mean not yet confirmed: never answer from them.",
+ "name": {
+  "first": "[NAME_FIRST]",
+  "middle": "[NAME_MIDDLE]",
+  "last": "[NAME_LAST]",
+  "full": "[NAME_FULL]",
+  "preferred": "[NAME_PREFERRED]"
+ },
+ "contact": {
+  "phone": "[CONTACT_PHONE]",
+  "phone_type": "[CONTACT_PHONE_TYPE]",
+  "email": "[CONTACT_EMAIL]",
+  "linkedin": "[CONTACT_LINKEDIN]"
+ },
+ "address": {
+  "street": "[ADDRESS_STREET]",
+  "street2": "",
+  "city": "[ADDRESS_CITY]",
+  "state": "[ADDRESS_STATE]",
+  "state_abbr": "[ADDRESS_STATE_ABBR]",
+  "zip": "[ADDRESS_ZIP]",
+  "zip_note": "[ADDRESS_ZIP_NOTE]",
+  "county": "[ADDRESS_COUNTY]",
+  "country": "[ADDRESS_COUNTRY]",
+  "city_state": "[ADDRESS_CITY_STATE]",
+  "one_line": "[ADDRESS_ONE_LINE]",
+  "type": "[ADDRESS_TYPE]"
+ },
+ "work_authorization": {
+  "authorized_us": null,
+  "us_citizen": null,
+  "needs_sponsorship": null,
+  "citizenship_label": "[WORK_AUTHORIZATION_CITIZENSHIP_LABEL]"
+ },
+ "education": {
+  "highest_level": "[EDUCATION_HIGHEST_LEVEL]",
+  "degree": "[EDUCATION_DEGREE]",
+  "school": "[EDUCATION_SCHOOL]",
+  "graduated": "[EDUCATION_GRADUATED]",
+  "gpa": "[EDUCATION_GPA]",
+  "high_school_diploma": null
+ },
+ "availability": {
+  "start": "[AVAILABILITY_START]",
+  "age_18_plus": null,
+  "pending_leave": null,
+  "weekends_off_hours": null,
+  "occasional_travel": null
+ },
+ "sourcing": {
+  "heard_about": "[SOURCING_HEARD_ABOUT]"
+ },
+ "self_id": {
+  "_rule": "[SET_WITH_THE_CANDIDATE]",
+  "gender": "[SELF_ID_GENDER]",
+  "race": "[SELF_ID_RACE]",
+  "hispanic_latino": null,
+  "protected_veteran": null,
+  "veteran": null,
+  "disability": null
+ },
+ "pay": {
+  "_rule": "[SET_WITH_THE_CANDIDATE]",
+  "remote_floor_annual": null
+ },
+ "screening": {
+  "_rule": "[SET_WITH_THE_CANDIDATE]",
+  "criminal_record": null,
+  "drivers_license": null,
+  "insured_vehicle": null,
+  "computer_under_8_years": null,
+  "ram_8gb_plus": null,
+  "internet_30mbps_plus": null,
+  "prohibited_pets": null,
+  "max_weekly_hours": null,
+  "esign_on_behalf": null,
+  "job_alert_emails": null,
+  "outside_activity_answer": "[SCREENING_OUTSIDE_ACTIVITY_ANSWER]"
+ },
+ "automation": {
+  "_rule": "Candidate opt-ins. Only the candidate can turn these on, explicitly, in their own words.",
+  "auto_submit": false
+ }
+}

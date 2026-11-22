@@ -1,0 +1,5 @@
+# Python packages used by tools/ and the personal-session portal tools.
+#   python -m pip install -r requirements.txt
+patchright>=1.50   # drives your own signed-in Chrome for Indeed and ZipRecruiter
+pypdf>=5.0         # reads the text layer of compiled CVs (ATS check)
+PyYAML>=6.0        # tools/lint_skills.py and tools/validate_profiles.py
