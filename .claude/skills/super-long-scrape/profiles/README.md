@@ -28,7 +28,7 @@ No profiles yet. Build the candidate's with `/super-long-scrape-profile`. Add on
 name: analyst                  # kebab-case, matches the filename
 summary: >                     # one sentence, shown when the skill lists profiles
   Strictly entry-level data, business, operations and finance analyst roles.
-scoring: standard              # standard | climb | tutoring — see Scoring below
+scoring: standard              # standard | climb | tutoring | automatable — see Scoring below
 geography: [portland-metro, remote]   # portland-metro | remote | one of each
 onsite: out                    # out | in-metro | in-clark-county. Remote or hybrid only is the
                                # default (2026-09-23); in-metro is for tutoring; in-clark-county
@@ -56,9 +56,32 @@ portals: [indeed-search, indeed-personal, linkedin-search, freehire-search, ats-
 | `standard` | `04-job-evaluation.md` — Technical 30 / Experience 25 / Behavioral 15 / Career 30, bands Strong 75+, Good 60-74, Moderate 45-59, Weak 30-44 | The profile hunts roles at the candidate's level. Most profiles. |
 | `climb` | `long-scrape/SKILL.md` Step 4 — Leverage gap 0-40, Carve-out 0-30, Ceiling 0-20, Floor tolerability 0-10 | The profile deliberately hunts *below* the candidate's level and scores room to grow, not present fit. |
 | `tutoring` | Defined inside `tutoring.md` — subject fit, rate, flexibility, autonomy | Hourly and per-session work, where an annual band is meaningless. |
+| `automatable` | Defined below — Automatable share 0-35, Async and output-based 0-30, Coexistence 0-20, Entry cost 0-15 | The profile hunts a low-effort job the candidate can compress with automation, where career growth is not the point. |
 
-A profile may not invent a fourth rubric inline. If one is genuinely needed, add it here
+A profile may not invent another rubric inline. If one is genuinely needed, add it here
 first so every profile that uses it scores the same way.
+
+### The `automatable` rubric
+
+For a job the candidate means to hold with little weekly effort, usually beside another
+commitment: the question is how small the job can be made, not how well it advances a career.
+Score 0-100 from the posting's duties and requirements, never from its title:
+
+| Dimension | Points | High score | Low score |
+|---|---|---|---|
+| Automatable share | 0-35 | Most stated duties are rules-based digital work: data entry, reconciliation, scheduling, reporting, document or order processing, record keeping, moving data between systems | Judgement, relationships, selling, physical or creative work dominate |
+| Async and output-based | 0-30 | Judged on work delivered; few meetings; no live coverage; flexible hours | A phone or chat queue, a shift to cover, back-to-back meetings, "fast-paced" as the core |
+| Coexistence | 0-20 | Nothing in the posting collides with other work: no on-call, travel, overtime or evening expectation, no exclusivity or outside-work clause, no activity monitoring | Any of those stated |
+| Entry cost | 0-15 | The candidate clears every hard requirement from the profile | A hard requirement the profile does not support (score 0 and say which) |
+
+Bands: **Pursue 75+**, worth a look 60-74, list only 45-59, not presented under 45.
+
+Caps, applied after scoring and always stated in the row: live phone or chat coverage as the
+core deliverable caps the total at 55; stated activity monitoring (screenshots, webcam,
+keystroke or mouse tracking, productivity software) caps it at 45; a stated bar on other
+employment caps it at 40 and is quoted. A cap never hides the row; it explains the score.
+What the posting does not say is not evidence: unknown meeting load or monitoring scores the
+middle of its dimension, and the row says "not stated".
 
 ---
 

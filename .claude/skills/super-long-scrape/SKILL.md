@@ -234,15 +234,16 @@ Compare, and report any mismatch to the user rather than resolving it silently:
 
 ## Phase 6 — Score, store, present
 
-**Score with the rubric the profile's `scoring:` field names, and no other.** The three that exist:
+**Score with the rubric the profile's `scoring:` field names, and no other.** The four that exist:
 
 | `scoring` | Rubric | Bands |
 |---|---|---|
 | `standard` | `04-job-evaluation.md` — Technical 30 / Experience 25 / Behavioral 15 / Career 30 | Strong 75+, Good 60-74, Moderate 45-59, Weak 30-44 |
 | `climb` | `/long_scrape` Step 4 — Leverage gap 0-40, Carve-out 0-30, Ceiling 0-20, Floor tolerability 0-10, phone load scored only in Floor | Strong climb 75+, worth a look 55-74, thin 35-54, not presented under 35 |
 | `tutoring` | Hourly/per-session work; dimensions defined inside the profile that declares it (the archived version used Subject fit 30 / Rate 25 / Flexibility 25 / Autonomy 20) | Pursue 75+, worth a look 55-74, list only 35-54, not presented under 35 |
+| `automatable` | `profiles/README.md`, "The `automatable` rubric" — Automatable share 0-35 / Async and output-based 0-30 / Coexistence 0-20 / Entry cost 0-15, with the three stated caps | Pursue 75+, worth a look 60-74, list only 45-59, not presented under 45 |
 
-A profile may narrow how a rubric is read — which dimension a domain gap lands on, what counts as a hard requirement — in its "Scoring notes". It may not invent a fourth rubric inline; that goes in `profiles/README.md` first, so every profile using it scores the same way. **Apply the profile's pay rule, not a default one**, and never one stricter than the candidate's own pay rule in `CLAUDE.md` (which may be "no pay screen at all"): an hourly profile has no annual floor, and flagging a $38/hr tutoring posting against an annual floor is a bug. Always report the posted figure.
+A profile may narrow how a rubric is read — which dimension a domain gap lands on, what counts as a hard requirement — in its "Scoring notes". It may not invent another rubric inline; that goes in `profiles/README.md` first, so every profile using it scores the same way. **Apply the profile's pay rule, not a default one**, and never one stricter than the candidate's own pay rule in `CLAUDE.md` (which may be "no pay screen at all"): an hourly profile has no annual floor, and flagging a $38/hr tutoring posting against an annual floor is a bug. Always report the posted figure.
 
 Store with `"track": "<the profile's track_tag>"` plus the `/long_scrape` additive fields, so a tutoring hit and an analyst hit stay tellable apart in the ledger years later.
 

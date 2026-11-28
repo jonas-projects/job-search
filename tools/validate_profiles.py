@@ -17,7 +17,7 @@ import re
 import sys
 
 PROFILE_DIR = os.path.join(".claude", "skills", "super-long-scrape", "profiles")
-VALID_SCORING = ("standard", "climb", "tutoring")
+VALID_SCORING = ("standard", "climb", "tutoring", "automatable")
 # out = remote or hybrid only (the default). in-metro = in-person seats in the candidate's metro.
 # in-<area> (kebab-case) = in-person seats in a named area the candidate's profile defines.
 VALID_ONSITE = ("out", "in-metro", "in-<area>")

@@ -41,7 +41,7 @@ lets a future run judge whether an unfamiliar posting belongs.
 Ask the candidate (directly, or through the user relaying their answers), and do not skip these — each one changes the file materially. Read `CLAUDE.md` and the candidate profile first so you can propose answers the candidate confirms, but never assume them:
 
 1. **What is the bet?** Why would an employer in this category want the candidate specifically, and why would the candidate want them? One or two sentences in the candidate's own words if possible; a thesis that quotes the candidate directly is stronger for it.
-2. **Is this at the candidate's level, below it, or beside it?** This decides `scoring:` — `standard` for at-level, `climb` for deliberately below, a named alternative (`tutoring`, or a new rubric added to `profiles/README.md` first) for work that annual bands do not describe.
+2. **Is this at the candidate's level, below it, or beside it?** This decides `scoring:` — `standard` for at-level, `climb` for deliberately below, `automatable` for a low-effort job the candidate means to compress, a named alternative (`tutoring`, or a new rubric added to `profiles/README.md` first) for work that annual bands do not describe.
 3. **Geography and mode.** Metro, remote, or both — and which metro? Start from the candidate's work-mode rules in `CLAUDE.md`. The default is `onsite: out` (remote, or hybrid inside the candidate's metro). In-person work needs the candidate's explicit say-so for this profile: `onsite: in-metro` for in-person anywhere in the metro, or `onsite: in-<area>` (kebab-case, naming an area the candidate's profile defines, e.g. a county) for in-person seats in that area only. Work mode is always parsed from the body in Phase 4 and never filtered at search time, so the profile states the rule, not a filter. If the profile has a seniority target, set `level:` (today only `entry` exists).
 4. **Employment types.** Full-time only, or are contract and part-time in scope? Ask separately for remote and local, because a candidate's rules often split them.
 5. **Pay.** Annual or hourly? Does the candidate want a pay screen at all (some do not; then the profile only reports the posted figure)? If so, what is the target, and what is the floor below which a posting has to justify itself? An hourly profile must say so explicitly, or the machinery will flag every posting against an annual floor.
@@ -131,7 +131,7 @@ four-hour run.**
 
 4. **Then check by eye what the validator cannot:**
    - [ ] `name` matches the filename, kebab-case
-   - [ ] `scoring` is one of `standard`, `climb`, `tutoring` — or the new rubric was added to `profiles/README.md` first
+   - [ ] `scoring` is one of `standard`, `climb`, `tutoring`, `automatable` — or the new rubric was added to `profiles/README.md` first
    - [ ] `track_tag` is unique across profiles
    - [ ] Pay block matches the pay model (`pay` for annual, `pay_hourly` for hourly — never both)
    - [ ] `employment` is stated separately for remote and local
