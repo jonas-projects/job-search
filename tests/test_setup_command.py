@@ -67,9 +67,14 @@ class SetupStep3ContactBlocks(unittest.TestCase):
         self.assertIn("06-cover-letter-templates.md", summary)
 
 
+_PRISTINE = "[YOUR_NAME]" in (COMMAND.parents[2] / "CLAUDE.md").read_text(encoding="utf-8")
+
+
+@unittest.skipUnless(_PRISTINE, "workspace is personalized: /setup has replaced the template placeholders")
 class TemplatesStillCarryThePlaceholders(unittest.TestCase):
     """The instructions above target real tokens; if a template renames them,
-    the instruction and this test must move together."""
+    the instruction and this test must move together. Checked on a blank
+    workspace only: /setup replaces these tokens by design."""
 
     def test_cv_templates_contact_block_tokens(self):
         text = CV_TEMPLATES.read_text(encoding="utf-8")
